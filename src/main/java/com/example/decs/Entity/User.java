@@ -1,13 +1,10 @@
-package com.example.devsync.Entity;
+package com.example.decs.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "\"User\"") // Quoting the table name
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,9 +14,19 @@ public class User {
     private String lastName;
     private String email;
     private String password;
+    private int coins;
     private Boolean is_chef;
 
-    public Boolean Is_chef() {
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    public Boolean isChef() { // Changed method name to camelCase
         return is_chef;
     }
 
@@ -80,7 +87,16 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(username, user.username) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password);
+        return Objects.equals(username, user.username) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, firstName, lastName, email, password); // Include relevant fields
     }
 
     @Override
@@ -91,7 +107,6 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+                '}'; // Removed password for security
     }
 }

@@ -1,34 +1,56 @@
-package com.example.devsync.Entity;
+package com.example.decs.Entity;
 
-import com.example.devsync.Entity.Enums.Status;
+import com.example.decs.Entity.Enums.Status;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Status status;
+
     private LocalDate dueDate;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean isCompleted;
+
     @ManyToOne
+    @JoinColumn(name = "assignedTo_id")
     private User assignedTo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "task_tag",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
+
+    public Task(String title, String description, Status status, LocalDate dueDate, LocalDate startDate, LocalDate endDate, boolean isCompleted) {
+
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.dueDate = dueDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.isCompleted = isCompleted;
+    }
+
+
+    public Task() {
+
+    }
 
 
     public Long getId() {
@@ -101,6 +123,14 @@ public class Task {
 
     public void setAssignedTo(User assignedTo) {
         this.assignedTo = assignedTo;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override
