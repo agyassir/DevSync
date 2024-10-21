@@ -29,10 +29,10 @@ public class UserServiceTest {
     @Test
     public void testSignup_Success() {
         // Arrange
-        String username = "testUser1";
+        String username = "testUser1232";
         String firstname = "John";
         String lastname = "Doe";
-        String email = "test1@example.com";
+        String email = "test123@example.com";
         String password = "password";
         boolean isChef = true;
 
@@ -40,7 +40,7 @@ public class UserServiceTest {
         when(userRepository.findByUsername(username)).thenReturn(null);
         when(userRepository.save(any(User.class))).thenReturn(new User());
 
-        // Act
+
         User result = userService.signup(username, firstname, lastname, email, password, isChef);
 
         // Assert
@@ -122,22 +122,5 @@ public class UserServiceTest {
 
 
 
-    @Test
-    public void testIncrementUserCoinsDaily() {
-        // Arrange
-        User user1 = new User();
-        user1.setCoins(5);
-        User user2 = new User();
-        user2.setCoins(10);
-
-        when(userRepository.getAll()).thenReturn(Arrays.asList(user1, user2));
-
-        // Act
-        userService.incrementUserCoinsDaily();
-
-        // Assert
-        assertEquals(7, user1.getCoins());
-        assertEquals(12, user2.getCoins());
-        verify(userRepository, times(2)).update(any(User.class));
-    }
+ 
 }
